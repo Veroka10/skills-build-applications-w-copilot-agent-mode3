@@ -32,32 +32,74 @@ function Activities() {
     fetchActivities();
   }, []);
 
-  if (loading) return <div className="container mt-5"><p>Loading activities...</p></div>;
-  if (error) return <div className="container mt-5"><p>Error: {error}</p></div>;
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="loading-spinner">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <div className="alert alert-danger alert-container" role="alert">
+          <strong>Error:</strong> {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mt-5">
-      <h2>Activities</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Activity Type</th>
-            <th>Description</th>
-            <th>Duration</th>
-          </tr>
-        </thead>
-        <tbody>
-          {activities.map((activity) => (
-            <tr key={activity.id}>
-              <td>{activity.id}</td>
-              <td>{activity.activity_type}</td>
-              <td>{activity.description}</td>
-              <td>{activity.duration}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="container">
+      <h2 className="mb-4">🏃 Activities</h2>
+      <div className="card data-card">
+        <div className="card-header">
+          <strong>Activity Log ({activities.length})</strong>
+        </div>
+        <div className="card-body p-0">
+          {activities.length > 0 ? (
+            <div className="table-responsive">
+              <table className="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th className="text-center" style={{ width: '50px' }}>ID</th>
+                    <th>Activity Type</th>
+                    <th>Description</th>
+                    <th className="text-end">Duration</th>
+                    <th className="text-center" style={{ width: '100px' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {activities.map((activity) => (
+                    <tr key={activity.id}>
+                      <td className="text-center">{activity.id}</td>
+                      <td>
+                        <span className="badge bg-info">{activity.activity_type}</span>
+                      </td>
+                      <td>{activity.description}</td>
+                      <td className="text-end">
+                        <strong>{activity.duration} min</strong>
+                      </td>
+                      <td className="text-center">
+                        <button className="btn btn-sm btn-primary">View</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-4 text-center text-muted">
+              <p>No activities found</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

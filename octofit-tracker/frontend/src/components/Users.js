@@ -32,30 +32,70 @@ function Users() {
     fetchUsers();
   }, []);
 
-  if (loading) return <div className="container mt-5"><p>Loading users...</p></div>;
-  if (error) return <div className="container mt-5"><p>Error: {error}</p></div>;
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="loading-spinner">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <div className="alert alert-danger alert-container" role="alert">
+          <strong>Error:</strong> {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="container mt-5">
-      <h2>Users</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-              <td>{user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="container">
+      <h2 className="mb-4">👥 Users</h2>
+      <div className="card data-card">
+        <div className="card-header">
+          <strong>User Directory ({users.length})</strong>
+        </div>
+        <div className="card-body p-0">
+          {users.length > 0 ? (
+            <div className="table-responsive">
+              <table className="table table-striped align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th className="text-center" style={{ width: '50px' }}>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th className="text-center" style={{ width: '100px' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id}>
+                      <td className="text-center">{user.id}</td>
+                      <td>
+                        <strong>{user.username}</strong>
+                      </td>
+                      <td>{user.email}</td>
+                      <td className="text-center">
+                        <button className="btn btn-sm btn-primary">View</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="p-4 text-center text-muted">
+              <p>No users found</p>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
